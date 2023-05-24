@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="products"></div>
+    <h1>Basket</h1>
+    <div id="basket"></div>
+    <script>
+      const productsContainer = document.getElementById("products");
+      const productsBasket = document.getElementById("basket");
+      let products = [
+        {
+          id: 1,
+          name: "Cola",
+          price: 2,
+        },
+        {
+          id: 2,
+          name: "Fanta",
+          price: 3,
+        },
+        {
+          id: 3,
+          name: "Sprite",
+          price: 4,
+        },
+      ];
+
+      products.forEach((product) => {
+        const divProduct = document.createElement("div");
+        const addButton = document.createElement("button");
+        const newProduct = document.createElement("span");
+
+        newProduct.textContent = product.name + "$" + product.price;
+        addButton.textContent = "add to basket";
+        productsContainer.append(divProduct);
+        divProduct.append(newProduct, addButton);
+
+        addButton.addEventListener("click", () => {
+          //basketi array kimi getirir
+          let basket = JSON.parse(localStorage.getItem("basket")) || [];
+
+          //kime bassan onu elde edir
+          localStorage.setItem("basket", JSON.stringify([...basket, product]));
+          getFromLocalStorage();
+        });
+      });
+
+      function getFromLocalStorage() {
+        productsBasket.innerHTML = "";
+        const basketItem = JSON.parse(localStorage.getItem("basket")) || [];
+        // console.log(basketItem);
+
+        basketItem.forEach((item) => {
+          const divProduct = document.createElement("div");
+          const deleteButton = document.createElement("button");
+          const newProduct = document.createElement("span");
+          newProduct.textContent = item.name + "$" + item.price;
+          deleteButton.textContent = "delete from localstorage";
+          productsBasket.append(divProduct);
+          divProduct.append(newProduct, deleteButton);
+        });
+      }
+      getFromLocalStorage();
+    </script>
+  </body>
+</html>
